@@ -219,7 +219,7 @@ let float = str => {
 
 let int = str =>
   try (int_of_string(str)) {
-  | Failure("int_of_string") => raise(DecodeError("int expected"))
+  | Failure(_) => raise(DecodeError("int expected"))
   };
 
 let date = str => {
@@ -233,7 +233,7 @@ let date = str => {
 
 let bool = str =>
   try (str->bool_of_string) {
-  | Invalid_argument("bool_of_string") =>
+  | Invalid_argument(_) =>
     raise(DecodeError("bool expected"))
   };
 
@@ -242,5 +242,5 @@ let childElements = elem => {
   ->Xml_Element.childNodes
   ->Xml_NodeList.asArrayLike
   ->Js.Array.from
-  ->Belt.Array.keepMap(Xml_Element.asElement);
+  ->Belt.Array.keepMap(Xml_Node.asElement);
 };
