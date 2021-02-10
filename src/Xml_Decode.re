@@ -1,22 +1,22 @@
 open Belt;
+open Webapi;
 
-type decoder('a) = Dom.element => 'a;
+type decoder('a) = Xml_Element.t => 'a;
 
 exception DecodeError(string);
 
 // Element properties with different names
 
-[@bs.get] external text: Dom.element => string = "textContent";
+let text = Dom.Element.textContent;
 
-[@bs.get] [@bs.return nullable]
-external namespace: Dom.element => option(string) = "namespaceURI";
+let namespace = Dom.Element.namespaceURI;
 
-[@bs.get] external name: Dom.element => string = "localName";
+let name = Dom.Element.localName;
 
-let ok = (value: 'a, _: Dom.element) => value;
+let ok = (value: 'a, _: Xml_Element.t) => value;
 
 let error: 'a =
-  (msg: string, _: Dom.element) => {
+  (msg: string, _: Xml_Element.t) => {
     raise(DecodeError(msg));
   };
 
@@ -30,8 +30,8 @@ let requireSome = opt => {
 let attribute =
     (
       name: string,
-      ~namespace: option(option(string))=?,
-      element: Dom.element,
+      ~namespace: option(string)=?,
+      element: Xml_Element.t,
     ) => {
   open Xml_Element;
   open Xml_Attribute;
@@ -41,7 +41,7 @@ let attribute =
 
   switch (namespace) {
   | Some(namespace) =>
-    switch (attrs->getNamedItemNS(~namespace, ~localName=name)) {
+    switch (attrs->getNamedItemNS(namespace, name)) {
     | Some(attr) => attr->value
     | None => raise(DecodeError(name ++ " attribute expected"))
     }
@@ -53,7 +53,7 @@ let attribute =
   };
 };
 
-let requireName = (element: Dom.element, name: string) => {
+let requireName = (element: Xml_Element.t, name: string) => {
   open Xml_Element;
 
   if (element->localName != name) {
@@ -64,12 +64,12 @@ let requireName = (element: Dom.element, name: string) => {
   element;
 };
 
-let withName = (name: string, decoder: decoder('a), element: Dom.element) => {
-  let _: Dom.element = requireName(element, name);
+let withName = (name: string, decoder: decoder('a), element: Xml_Element.t) => {
+  let _: Xml_Element.t = requireName(element, name);
   decoder(element);
 };
 
-let requireNamespace = (element: Dom.element, namespace: option(string)) => {
+let requireNamespace = (element: Xml_Element.t, namespace: option(string)) => {
   open Xml_Element;
 
   if (element->namespaceURI != namespace) {
@@ -87,8 +87,8 @@ let requireNamespace = (element: Dom.element, namespace: option(string)) => {
 };
 
 let withNamespace =
-    (namespace: option(string), decoder: decoder('a), element: Dom.element) => {
-  let _: Dom.element = requireNamespace(element, namespace);
+    (namespace: option(string), decoder: decoder('a), element: Xml_Element.t) => {
+  let _: Xml_Element.t = requireNamespace(element, namespace);
   decoder(element);
 };
 
@@ -97,7 +97,7 @@ let optional = (decoder: decoder('a), element) =>
   | DecodeError(_) => None
   };
 
-let child = (selector: Dom.element => bool, decoder: decoder('a), element) => {
+let child = (selector: Xml_Element.t => bool, decoder: decoder('a), element) => {
   open Xml_Element;
   open Xml_NodeList;
 
@@ -139,9 +139,9 @@ let select = (targetName, ~namespace as targetNamespace=?, element) =>
 
 let children =
     (
-      selector: Dom.element => bool,
+      selector: Xml_Element.t => bool,
       decoder: decoder('a),
-      element: Dom.element,
+      element: Xml_Element.t,
     ) => {
   open Xml_Element;
   open Xml_NodeList;
@@ -177,17 +177,17 @@ let andThen = (decoder: decoder('a), f: 'a => decoder('b), elem) => {
   f(a, elem);
 };
 
-let either = (left: decoder('a), right: decoder('a), elem: Dom.element) =>
+let either = (left: decoder('a), right: decoder('a), elem: Xml_Element.t) =>
   try (left(elem)) {
   | DecodeError(_) => right(elem)
   };
 
-let withDefault = (decoder, default, elem: Dom.element) =>
+let withDefault = (decoder, default, elem: Xml_Element.t) =>
   try (decoder(elem)) {
   | DecodeError(_) => default
   };
 
-let oneOf = (decoders: list(decoder('a)), elem: Dom.element) => {
+let oneOf = (decoders: list(decoder('a)), elem: Xml_Element.t) => {
   let arr = decoders->List.toArray;
 
   let result = ref(None);
@@ -219,7 +219,7 @@ let float = str => {
 
 let int = str =>
   try (int_of_string(str)) {
-  | Failure("int_of_string") => raise(DecodeError("int expected"))
+  | Failure(_) => raise(DecodeError("int expected"))
   };
 
 let date = str => {
@@ -233,7 +233,7 @@ let date = str => {
 
 let bool = str =>
   try (str->bool_of_string) {
-  | Invalid_argument("bool_of_string") =>
+  | Invalid_argument(_) =>
     raise(DecodeError("bool expected"))
   };
 
@@ -241,6 +241,5 @@ let childElements = elem => {
   elem
   ->Xml_Element.childNodes
   ->Xml_NodeList.asArrayLike
-  ->Js.Array.from
-  ->Belt.Array.keepMap(Xml_Element.asElement);
+  ->Belt.Array.keepMap(Xml_Node.asElement);
 };
