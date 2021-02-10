@@ -1,4 +1,5 @@
+open Webapi;
 
-module NodeLike(M: {type t;}) = Webapi.Dom.Node.Impl(M);
+module NodeLike(M: {type t;}) = Dom.Node.Impl(M);
 
-module ElementLike(M: {type t;}) = Webapi.Dom.Element.Impl(M);
+module ElementLike(M: {type t;}) = Dom.Element.Impl(M);

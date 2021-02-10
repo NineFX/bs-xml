@@ -1,9 +1,9 @@
-type t = Dom.namedNodeMap;
+open Webapi;
 
-[@bs.send] [@bs.return nullable]
-external getNamedItem: (t, string) => option(Dom.attr) = "getNamedItem";
+type t = Dom.NamedNodeMap.t;
 
-[@bs.send] [@bs.return nullable]
-external getNamedItemNS:
-  (t, ~namespace: option(string), ~localName: string) => option(Dom.attr) =
-  "getNamedItemNS";
+let getNamedItem = (map: t, name) => 
+  Dom.NamedNodeMap.getNamedItem(name, map);
+
+let getNamedItemNS = (map: t, namespace, localName) => 
+  Dom.NamedNodeMap.getNamedItemNS(namespace, localName, map);

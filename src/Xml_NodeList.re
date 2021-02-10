@@ -1,10 +1,12 @@
-type t = Dom.nodeList;
+open Webapi;
+open Belt;
 
-external asArrayLike: t => Js.Array.array_like(Dom.node) = "%identity";
+type t = Dom.NodeList.t;
 
-[@bs.get] external length: t => int = "length";
+let asArrayLike: t => array(Xml_Node.t) = Dom.NodeList.toArray;
 
-[@bs.send] [@bs.return nullable]
-external item: (t, int) => option(Dom.node) = "item";
+let length: t => int = Dom.NodeList.length;
 
-[@bs.send] external itemUnsafe: (Dom.nodeList, int) => Dom.node = "item";
+let item = (nl, idx) => Dom.NodeList.item(idx, nl);
+
+let itemUnsafe = (nl, idx) => item(nl, idx)->Option.getExn;
