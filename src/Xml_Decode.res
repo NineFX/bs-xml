@@ -23,7 +23,7 @@ let requireSome = opt =>
   | None => raise(DecodeError("some expected, got none"))
   }
 
-let attribute = (name: string, ~namespace: option<string>=?, element: Xml_Element.t) => {
+let attribute = (~namespace: option<string>=?, name: string, element: Xml_Element.t) => {
   open Xml_Element
   open Xml_Attribute
   open Xml_NamedNodeMap
@@ -113,7 +113,7 @@ let child = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element) => 
 
 let selectAny = _ => true
 
-let select = (targetName, ~namespace as targetNamespace=?, element) =>
+let select = (~namespace as targetNamespace=?, targetName, element) =>
   if targetName == element->name {
     switch targetNamespace {
     | Some(targetNamespace) => targetNamespace == element->namespace

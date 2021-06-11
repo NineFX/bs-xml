@@ -19,7 +19,7 @@ let requireSome: option<'a> => 'a
 let requireName: (Xml_Element.t, string) => Xml_Element.t
 let requireNamespace: (Xml_Element.t, option<string>) => Xml_Element.t
 
-let attribute: (string, ~namespace: string=?) => decoder<string>
+let attribute: (~namespace: string=?, string) => decoder<string>
 
 let withName: (string, decoder<'a>) => decoder<'a>
 let withNamespace: (option<string>, decoder<'a>) => decoder<'a>
@@ -28,7 +28,7 @@ let optional: decoder<'a> => decoder<option<'a>>
 // select* functions are used in 'child' and 'children' decoders
 
 let selectAny: Xml_Element.t => bool
-let select: (string, ~namespace: option<string>=?, Xml_Element.t) => bool
+let select: (~namespace: option<string>=?, string, Xml_Element.t) => bool
 
 let child: (Xml_Element.t => bool, decoder<'a>) => decoder<'a>
 let children: (Xml_Element.t => bool, decoder<'a>) => decoder<array<'a>>
