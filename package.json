@@ -37,7 +37,7 @@
     "webpack": "^5.21.2"
   },
   "dependencies": {
-    "rescript": "9",
+    "rescript": "^9.1.2",
     "rescript-webapi": "^0.0.1"
   }
 }
