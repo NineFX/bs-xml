@@ -92,7 +92,7 @@ let child = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element) => 
   let found = ref(None)
   let i = ref(0)
   while found.contents->Option.isNone && i.contents < nodes->length {
-    let node = nodes->itemUnsafe(i.contents)
+    let node = nodes->itemUnsafe(i.contents, _)
 
     switch node->Xml_Node.asElement {
     | Some(e) =>
@@ -130,7 +130,7 @@ let children = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element: 
   let result: array<'a> = []
 
   for i in 0 to children->length - 1 {
-    let node = children->itemUnsafe(i)
+    let node = children->itemUnsafe(i, _)
 
     switch node->Xml_Node.asElement {
     | Some(e) =>

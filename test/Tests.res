@@ -204,17 +204,20 @@ module T1 = {
   }
 
   let decode = elem => {
-    open Xml.Decode
+    module Decode = Xml.Decode
     {
-      a: elem |> attribute("a")->map(float),
-      b: elem |> attribute("b")->map(float)->optional,
-      c: elem |> child(select("c"), text->map(bool)),
-      d: elem |> attribute("d")->map(bool)->optional,
-      e: elem |> attribute("eee")->optional,
-      f: elem |> attribute("f")->map(date),
-      g: elem |> oneOf(list{attribute("g"), attribute("gg"), attribute("ggg")}),
-      h: elem |> child(select("h"), text)->withDefault("default"),
-      i: elem |> child(select("i"), text)->map(float),
+        open Decode
+        {
+        a: attribute("a")->map(Decode.float, elem),
+        b: elem |> attribute("b")->map(Decode.float)->optional,
+        c: elem |> child(select("c"), text->map(Decode.bool)),
+        d: elem |> attribute("d")->map(Decode.bool)->optional,
+        e: elem |> attribute("eee")->optional,
+        f: elem |> attribute("f")->map(date),
+        g: elem |> oneOf(list{attribute("g"), attribute("gg"), attribute("ggg")}),
+        h: elem |> child(select("h"), text)->withDefault("default"),
+        i: elem |> child(select("i"), text)->map(Decode.float),
+        }
     }
   }
 }
