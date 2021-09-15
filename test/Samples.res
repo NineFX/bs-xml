@@ -1,4 +1,4 @@
-let rss1 = {js|<?xml version="1.0" encoding="utf-8" ?>
+let rss1 = `<?xml version="1.0" encoding="utf-8" ?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
      xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
      xmlns:creativeCommons="http://backend.userland.com/creativeCommonsRssModule"
@@ -845,4 +845,4 @@ let rss1 = {js|<?xml version="1.0" encoding="utf-8" ?>
     </channel>
 </rss>
 
-|js};
+`

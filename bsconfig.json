@@ -20,7 +20,7 @@
     "@glennsl/bs-jest"
   ],
   "bs-dependencies": [
-    "bs-webapi"
+    "rescript-webapi"
   ],
   "warnings": {
     "error": "+101"
