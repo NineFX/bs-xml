@@ -92,7 +92,7 @@ let child = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element) => 
   let found = ref(None)
   let i = ref(0)
   while found.contents->Option.isNone && i.contents < nodes->length {
-    let node = nodes->itemUnsafe(i.contents, _)
+    let node = nodes->itemUnsafe(i.contents)
 
     switch node->Xml_Node.asElement {
     | Some(e) =>
@@ -124,25 +124,11 @@ let select = (~namespace as targetNamespace=?, targetName, element) =>
   }
 
 let children = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element: Xml_Element.t) => {
-  open Xml_Element
-  open Xml_NodeList
-  let children = element->childNodes
-  let result: array<'a> = []
-
-  for i in 0 to children->length - 1 {
-    let node = children->itemUnsafe(i, _)
-
-    switch node->Xml_Node.asElement {
-    | Some(e) =>
-      if selector(e) {
-        result |> Js.Array.push(decoder(e)) |> ignore
-      }
-
-    | None => ()
-    }
-  }
-
-  result
+  Xml_Element.childNodes(element)
+  ->Xml_NodeList.asArrayLike
+  ->Belt.Array.keepMap(Xml_Node.asElement)
+  ->Belt.Array.keep(selector)
+  ->Belt.Array.map(decoder)
 }
 
 let map = (decoder: decoder<'a>, f: 'a => 'b, elem) => decoder(elem)->f
