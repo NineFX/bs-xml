@@ -1,0 +1,38 @@
+name: Advanced Checks for a PR
+
+on:
+  pull_request:
+      types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+
+jobs:
+  build-and-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+    - name: Build
+      run: |
+        npm i -g yarn
+        yarn build:release
+        yarn package:release
+    - name: NPM Package Vulnerabilities
+      run: yarn audit
+  enforce-changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+    - id: changelog-enforcer
+      uses: dangoslen/changelog-enforcer@v3
+      with:
+        skipLabels: skip-changelog
+        missingUpdateErrorMessage: |
+          Update the CHANGELOG!

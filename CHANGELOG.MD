@@ -1,3 +1,15 @@
+## 0.3.2
+
+* Update versions in `bsconfig.json` and `package.json` for consistency
+* Add GitHub Action for PR CI
+* Tag release in GitHub
+
+### Breaking changes
+
+* old `Decode.withName` renamed to requireName
+* old `Decode.withNamespace` renamed to requireNamespace
+* `Decode.withName` is now higher-order decoder
+
 ## 0.3.0
 
 ### Breaking changes

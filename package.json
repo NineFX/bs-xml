@@ -1,10 +1,10 @@
 {
   "name": "@zpnester/bs-xml",
   "description": "DOM Document decode API for BuckleScript",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zpnester/bs-xml.git"
+    "url": "https://github.com/NineFX/bs-xml.git"
   },
   "author": {
     "name": "Andriy Nesterenko",
@@ -21,6 +21,7 @@
     "start": "concurrently --raw npm:watch npm:webpack-dev-server"
   },
   "keywords": [
+    "ReScript",
     "BuckleScript",
     "DOMParser",
     "Document",
