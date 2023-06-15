@@ -12,9 +12,9 @@
     "url": "https://github.com/zpnester"
   },
   "scripts": {
-    "clean": "bsb -clean-world",
-    "build": "bsb -make-world",
-    "watch": "bsb -make-world -w",
+    "clean": "rescript clean -with-deps",
+    "build": "rescript build",
+    "watch": "rescript build -w",
     "test:watch": "jest --watchAll",
     "test": "jest",
     "webpack-dev-server": "webpack-dev-server",
@@ -30,7 +30,6 @@
   "license": "MIT",
   "devDependencies": {
     "@glennsl/bs-jest": "^0.7.0",
-    "bs-platform": "^9.0.2",
     "concurrently": "7.4.0",
     "copy-webpack-plugin": "11.0.0",
     "html-webpack-plugin": "5.5.0",
