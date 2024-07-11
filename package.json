@@ -1,27 +1,32 @@
 {
-  "name": "@zpnester/bs-xml",
-  "description": "DOM Document decode API for BuckleScript",
-  "version": "0.3.0",
+  "name": "@ninefx/bs-xml",
+  "description": "DOM Document decode API for ReScript",
+  "version": "0.4.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zpnester/bs-xml.git"
+    "url": "https://github.com/NineFX/bs-xml.git"
   },
   "author": {
     "name": "Andriy Nesterenko",
     "email": "zpnester@gmail.com",
     "url": "https://github.com/zpnester"
   },
+  "contributors": [
+    "Eric S Bullington <eric.bullington@ninefx.com>",
+    "Joey Eckstrom <joey.eckstrom@ninefx.com>",
+    "Chris Bowling <chris.bowling@ninefx.com>",
+    "Drew Varner <drew.varner@ninefx.com>",
+    "Samuel Nichols <sam.nichols@ninefx.com>"
+  ],
   "scripts": {
     "clean": "rescript clean -with-deps",
     "build": "rescript build",
     "watch": "rescript build -w",
-    "test:watch": "jest --watchAll",
-    "test": "jest",
     "webpack-dev-server": "webpack-dev-server",
     "start": "concurrently --raw npm:watch npm:webpack-dev-server"
   },
   "keywords": [
-    "BuckleScript",
+    "ReScript",
     "DOMParser",
     "Document",
     "XML",
@@ -29,14 +34,13 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@glennsl/bs-jest": "^0.7.0",
-    "concurrently": "7.4.0",
-    "copy-webpack-plugin": "11.0.0",
-    "html-webpack-plugin": "5.5.0",
-    "webpack": "^5.74.0"
+    "concurrently": "8.2.2",
+    "copy-webpack-plugin": "12.0.2",
+    "html-webpack-plugin": "5.6.0",
+    "webpack": "^5.92.1"
   },
   "dependencies": {
-    "rescript": "^10.0.1",
-    "rescript-webapi": "^0.6.1"
+    "rescript": "^11.1.2",
+    "rescript-webapi": "^0.9.1"
   }
 }

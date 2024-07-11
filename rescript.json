@@ -1,29 +1,21 @@
 {
   "name": "@ninefx/bs-xml",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "sources": [
     {
       "dir": "src",
       "subdirs": true
-    },
-    {
-      "dir": "test",
-      "type": "dev"
     }
   ],
   "package-specs": {
-    "module": "commonjs",
-    "in-source": true
+    "module": "commonjs"
   },
   "suffix": ".bs.js",
-  "bs-dev-dependencies": [
-    "@glennsl/bs-jest"
-  ],
   "bs-dependencies": [
     "rescript-webapi"
   ],
   "warnings": {
     "error": "+101"
   },
-  "refmt": 3
+  "uncurried": false
 }
