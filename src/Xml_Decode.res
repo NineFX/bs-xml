@@ -128,25 +128,23 @@ let children = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element: 
   ->Xml_NodeList.asArrayLike
   ->Belt.Array.keepMap(Xml_Node.asElement)
   ->Belt.Array.keep(selector)
-  ->Belt.Array.map(decoder)
+  ->Belt.Array.map(decoder(_))
 }
 
 let map = (decoder: decoder<'a>, f: 'a => 'b, elem) => decoder(elem)->f
 
 let mapOptional = (decoder: decoder<option<'a>>, f: 'a => 'b, elem) =>
-  decoder(elem)->Belt.Option.map(f)
+  decoder(elem)->Option.map(f)
 
-let andThen = (decoder: decoder<'a>, f: 'a => decoder<'b>, elem) => {
-  let a = decoder(elem)
-  f(a, elem)
-}
+let andThen = (decoder: decoder<'a>, f: 'a => decoder<'b>, elem) =>
+  decoder(elem)->f
 
 let either = (left: decoder<'a>, right: decoder<'a>, elem: Xml_Element.t) =>
   try left(elem) catch {
   | DecodeError(_) => right(elem)
   }
 
-let withDefault = (decoder, default, elem: Xml_Element.t) =>
+let withDefault = (decoder: decoder<'a>, default, elem: Xml_Element.t) =>
   try decoder(elem) catch {
   | DecodeError(_) => default
   }
