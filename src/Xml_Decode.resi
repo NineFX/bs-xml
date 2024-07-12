@@ -4,11 +4,11 @@ exception DecodeError(string)
 
 // text, name and namespace also fit decoder('a) signature
 
-let text: Xml_Element.t => string
+let text: (. Xml_Element.t) => string
 
-let namespace: Xml_Element.t => option<string>
+let namespace: (. Xml_Element.t) => option<string>
 
-let name: Xml_Element.t => string
+let name: (. Xml_Element.t) => string
 
 let ok: 'a => decoder<'a>
 let error: string => decoder<'a>

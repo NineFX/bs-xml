@@ -126,7 +126,7 @@ let select = (~namespace as targetNamespace=?, targetName, element) =>
 let children = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element: Xml_Element.t) => {
   Xml_Element.childNodes(element)
   ->Xml_NodeList.asArrayLike
-  ->Belt.Array.keepMap(Xml_Node.asElement)
+  ->Belt.Array.keepMapU(Xml_Node.asElement)
   ->Belt.Array.keep(selector)
   ->Belt.Array.map(decoder)
 }
@@ -200,4 +200,4 @@ let bool = str =>
   }
 
 let childElements = elem =>
-  elem->Xml_Element.childNodes->Xml_NodeList.asArrayLike->Belt.Array.keepMap(Xml_Node.asElement)
+  elem->Xml_Element.childNodes->Xml_NodeList.asArrayLike->Belt.Array.keepMapU(Xml_Node.asElement)

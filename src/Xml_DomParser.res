@@ -12,7 +12,7 @@ let parse = (self, text, type_): Result.t<Xml_Element.t, string> => {
   | Some(errorElement) => Error(errorElement->Xml_Element.textContent)
   | None =>
     let nodes = doc->Xml_Document.childNodes->Xml_NodeList.asArrayLike
-    switch nodes->Array.keepMap(Xml_Node.asElement)->Array.get(0) {
+    switch nodes->Array.keepMapU(Xml_Node.asElement)->Array.get(0) {
     | Some(root) => Ok(root)
     | None => Error("root element missing")
     }
