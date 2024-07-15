@@ -1,4 +1,3 @@
-open Belt
 open Webapi
 
 type decoder<'a> = Xml_Element.t => 'a
@@ -65,8 +64,8 @@ let requireNamespace = (element: Xml_Element.t, namespace: option<string>) => {
     raise(
       DecodeError(
         "namespace '" ++
-        (namespace->Belt.Option.getWithDefault("") ++
-        ("' expected, got '" ++ (element->namespaceURI->Belt.Option.getWithDefault("") ++ "'"))),
+        (namespace->Option.getOr("") ++
+        ("' expected, got '" ++ (element->namespaceURI->Option.getOr("") ++ "'"))),
       ),
     )
   }
@@ -126,9 +125,9 @@ let select = (~namespace as targetNamespace=?, targetName, element) =>
 let children = (selector: Xml_Element.t => bool, decoder: decoder<'a>, element: Xml_Element.t) => {
   Xml_Element.childNodes(element)
   ->Xml_NodeList.asArrayLike
-  ->Belt.Array.keepMap(Xml_Node.asElement)
-  ->Belt.Array.keep(selector)
-  ->Belt.Array.map(decoder(_))
+  ->Array.filterMap(Xml_Node.asElement)
+  ->Array.filter(selector)
+  ->Array.map(decoder(_))
 }
 
 let map = (decoder: decoder<'a>, f: 'a => 'b, elem) => decoder(elem)->f
@@ -156,7 +155,7 @@ let oneOf = (decoders: list<decoder<'a>>, elem: Xml_Element.t) => {
 
   let i = ref(0)
   while result.contents->Option.isNone && i.contents < arr->Array.length {
-    let d = arr->Js.Array.unsafe_get(i.contents)
+    let d = arr->Array.getUnsafe(i.contents)
     let res = try Some(d(elem)) catch {
     | DecodeError(_) => None
     }
@@ -170,8 +169,8 @@ let oneOf = (decoders: list<decoder<'a>>, elem: Xml_Element.t) => {
 }
 
 let float = str => {
-  let f = str->Js.Float.fromString
-  if f->Js.Float.isFinite {
+  let f = str->Float.fromString->Option.getUnsafe
+  if f->Float.isFinite {
     f
   } else {
     raise(DecodeError("float expected"))
@@ -184,8 +183,8 @@ let int = str =>
   }
 
 let date = str => {
-  let d = str->Js.Date.fromString
-  if d->Js.Date.getTime->Js.Float.isNaN {
+  let d = str->Date.fromString
+  if d->Date.getTime->Float.isNaN {
     raise(DecodeError("date expected"))
   } else {
     d
@@ -198,4 +197,4 @@ let bool = str =>
   }
 
 let childElements = elem =>
-  elem->Xml_Element.childNodes->Xml_NodeList.asArrayLike->Belt.Array.keepMap(Xml_Node.asElement)
+  elem->Xml_Element.childNodes->Xml_NodeList.asArrayLike->Array.filterMap(Xml_Node.asElement)

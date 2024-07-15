@@ -12,7 +12,11 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "rescript-webapi"
+    "rescript-webapi",
+    "@rescript/core"
+  ],
+  "bsc-flags": [
+    "-open RescriptCore"
   ],
   "warnings": {
     "error": "+101"
