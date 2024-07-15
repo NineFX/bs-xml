@@ -1,5 +1,4 @@
 open Webapi
-open Belt
 
 type t = Dom.NodeList.t
 

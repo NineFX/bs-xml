@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "rescript": "^11.1.2",
-    "rescript-webapi": "^0.9.1"
+    "rescript-webapi": "^0.9.1",
+    "@rescript/core": "1.5.2"
   }
 }
