@@ -10,7 +10,7 @@
   "package-specs": {
     "module": "commonjs"
   },
-  "suffix": ".bs.js",
+  "suffix": ".res.js",
   "bs-dependencies": [
     "rescript-webapi",
     "@rescript/core"
