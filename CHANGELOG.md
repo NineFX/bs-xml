@@ -1,3 +1,9 @@
+## 0.4.0
+
+### Changed
+
+* Upgraded to ReScript v11.1 and using `@rescript/core`
+
 ## 0.3.0
 
 ### Breaking changes

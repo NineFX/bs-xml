@@ -25,5 +25,6 @@ lib/bs
 .merlin
 .bsb.lock
 *.bs.js
+*.res.js
 node_modules
 .idea

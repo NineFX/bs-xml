@@ -41,7 +41,7 @@ let oneOf: (list<decoder<'a>>, Xml_Element.t) => 'a
 
 let float: string => float
 let int: string => int
-let date: string => Js.Date.t
+let date: string => Date.t
 let bool: string => bool
 
 let childElements: decoder<array<Xml_Element.t>>
